@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Lesson48</string>
+    <string name="no_data">no data</string>
+    <string name="google_maps_api_key">AIzaSyDdp53r_wCYIhUBzRxuPGFqecKjoDJmj58</string>
+    <string name="permission_denied_dialog">Location permission needed to get the data. Please allow required permissions in settings</string>
+
+    <!--    ViewPagerFragment  -->
+    <string name="vp_fragment_tag">view_pager_fragment_tag</string>
+    <string name="slash">/</string>
+    <string name="interpunct">·</string>
+    <string name="sunday">Sun</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="o_temp_icon">o</string>
+    <string name="c_temp_icon">C</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <!--    Tab - Your Location    -->
+    <string name="tab_1_title">Your Location</string>
+    <string name="north">N</string>
+    <string name="north_east">NE</string>
+    <string name="east">E</string>
+    <string name="south_east">SE</string>
+    <string name="south">S</string>
+    <string name="south_west">SW</string>
+    <string name="west">W</string>
+    <string name="north_west">NW</string>
+    <string name="wind">Wind</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="real_feel">Real feel</string>
+    <string name="next_24_hours">Next 24 hours</string>
+    <string name="next_five_days">Next Five Days</string>
+    <string name="detailed_info">Detailed Info</string>
+
+    <!--    Tab - Find City    -->
+    <string name="tab_2_title">Find City</string>
+    <string name="location_search_hint">Enter Address, City or Zip code</string>
+    <string name="find_from_map">Find From Map</string>
+    <string name="meters_in_second">m/s</string>
+    <string name="png_format">.png</string>
+    <string name="percent_symbol">%</string>
+    <string name="hecto_pascal">hPa</string>
+
+
+    <!--    Map Activity    -->
+    <string name="invalid_address">Invalid address</string>
+    <string name="unable_to_get_current_location">Unable to get current location</string>
+
+</resources>
