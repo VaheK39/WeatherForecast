@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lesson48</string>
+    <string name="app_name">Weather</string>
     <string name="no_data">no data</string>
     <string name="google_maps_api_key">AIzaSyDdp53r_wCYIhUBzRxuPGFqecKjoDJmj58</string>
     <string name="permission_denied_dialog">Location permission needed to get the data. Please allow required permissions in settings</string>
@@ -50,5 +50,9 @@
     <!--    Map Activity    -->
     <string name="invalid_address">Invalid address</string>
     <string name="unable_to_get_current_location">Unable to get current location</string>
+
+    <!--    Main Activity    -->
+    <string name="splash_screen_tag">splash_screen_fragment</string>
+    <string name="loading_fragment_tag">loading_fragment</string>
 
 </resources>

@@ -39,16 +39,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'org.jetbrains:annotations:15.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     //Material components
     implementation 'com.google.android.material:material:1.1.0'
-    //Location services
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-    //Dexter handles requested permissions
-    implementation 'com.karumi:dexter:6.2.1'
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -64,6 +61,7 @@ dependencies {
     //Google Play Services
     implementation "com.google.android.gms:play-services-location:17.0.0"
     implementation "com.google.android.gms:play-services-places:17.0.0"
+    implementation 'com.google.android.libraries.places:places:2.3.0'
     //Lottie Animations
     implementation "com.airbnb.android:lottie:3.4.1"
 

@@ -1,7 +1,9 @@
 package com.example.lesson48;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.app.ActivityCompat;
@@ -17,30 +19,46 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.lesson48.geo.GeoLocate;
 import com.example.lesson48.utils.MapUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.util.Arrays;
+import java.util.Objects;
+
+import static com.example.lesson48.utils.MapUtils.DEFAULT_ZOOM;
 import static com.example.lesson48.utils.MapUtils.LOCATION_PERMISSION_REQUEST_CODE;
 
 public class MapActivity extends AppCompatActivity
-        implements OnMapReadyCallback, View.OnClickListener {
+        implements OnMapReadyCallback, View.OnClickListener, PlaceSelectionListener {
     private static final String TAG = "MapActivity";
 
+
     private GoogleMap map;
+    private GeoLocate geoLocate;
     private boolean locationPermissionsGranted = false;
     private double latitude, longitude;
-
-    private AppCompatEditText edtSearch;
+    private AppCompatAutoCompleteTextView edtSearch;
     private AppCompatImageView btnLocate, btnSelectThisLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +100,7 @@ public class MapActivity extends AppCompatActivity
 
 
     private void initMap() {
+        geoLocate = new GeoLocate(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
@@ -109,39 +128,8 @@ public class MapActivity extends AppCompatActivity
     }
 
 
-    private void initSearchBar() {
-        edtSearch.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH
-                    || actionId == EditorInfo.IME_ACTION_DONE
-                    || event.getAction() == KeyEvent.KEYCODE_ENTER
-                    || event.getAction() == KeyEvent.ACTION_DOWN) {
-
-                geoLocate();
-            }
-            return false;
-        });
-    }
-
-    private void geoLocate() {
-        String searchString = String.valueOf(edtSearch.getText());
-        GeoLocate geoLocate = new GeoLocate(this);
-        Address address = geoLocate.getAddress(searchString);
-        if (address == null) {
-            Toast.makeText(this, R.string.invalid_address, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Log.d(TAG, "geoLocate: found an address: " + address.getAddressLine(0));
-        moveCamera(new LatLng(address.getLatitude(), address.getLongitude()),
-                MapUtils.DEFAULT_ZOOM,
-                address.getAddressLine(0));
-        latitude = address.getLatitude();
-        longitude = address.getLongitude();
-
-    }
-
     private void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation: getting device's location");
-        GeoLocate geoLocate = new GeoLocate(this);
         Task<Location> location = geoLocate.getTask();
 
         location.addOnCompleteListener(task -> {
@@ -165,6 +153,7 @@ public class MapActivity extends AppCompatActivity
     }
 
 
+
     private void moveCamera(LatLng latLng, float zoom, String title) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
@@ -176,6 +165,40 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
+
+
+
+    private void initSearchBar() {
+        Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
+        searchAnAddress();
+
+    }
+
+
+    private void searchAnAddress() {
+        AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.fragment_places);
+        assert autocompleteSupportFragment != null;
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteSupportFragment.setOnPlaceSelectedListener(this);
+    }
+
+    @Override
+    public void onPlaceSelected(@NonNull Place place) {
+        Log.d(TAG, "onPlaceSelected: Selected:" + place.getName() +
+                "\nlat = " + Objects.requireNonNull(place.getLatLng()).latitude +
+                ", lng = " + place.getLatLng().longitude);
+        Log.d(TAG, "onPlaceSelected: ");
+        this.latitude = place.getLatLng().latitude;
+        this.longitude = place.getLatLng().longitude;
+        moveCamera(place.getLatLng(), DEFAULT_ZOOM, Objects.requireNonNull(place.getName()));
+    }
+
+    @Override
+    public void onError(@NonNull Status status) {
+        Log.d(TAG, "onError: Failed to access:"  + status.getStatusMessage());
+    }
 
 
 
@@ -193,6 +216,7 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -205,8 +229,9 @@ public class MapActivity extends AppCompatActivity
                 data.putExtra(MapUtils.MAP_INTENT_RESULT_KEY_LONGITUDE, longitude);
                 setResult(RESULT_OK, data);
                 finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right);
                 break;
         }
     }
+
 }

@@ -11,94 +11,105 @@
     >
 
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/img_location_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_lay_main_info_container_find_loc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/btn_find_location_on_map"
-        android:src="@drawable/ic_your_location"
-        />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/txt_location_name_find_loc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/img_location_icon"
-        app:layout_constraintStart_toEndOf="@id/img_location_icon"
-        android:fontFamily="@font/cabin"
-        android:textColor="@android:color/white"
-        android:gravity="center"
-        android:text="Yerevan"
-        />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_find_location_on_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:icon="@drawable/ic_find_on_map"
-        android:text="@string/find_from_map"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:textColor="#AED581"
-        app:iconTint="#64B5F6"
-        android:textSize="10sp"
-        />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/line_lay_temp_find_loc"
-        app:layout_constraintTop_toBottomOf="@id/btn_find_location_on_map"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf=
+            "@+id/guide_five_day_forecast_recycler_find_loc"
         >
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txt_temp_find_loc"
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_location_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22"
-            android:textSize="68sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/cabin"
-            android:textColor="@color/colorYellowWarm"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/btn_find_location_on_map"
+            android:src="@drawable/ic_your_location"
             />
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/o_temp_icon"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorYellowWarm"
-            android:textStyle="bold"
-            />
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/c_temp_icon"
-            android:textColor="@color/colorYellowWarm"
-            android:textSize="28sp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/cabin"
-            />
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/txt_description_find_loc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/line_lay_temp_find_loc"
-        android:fontFamily="@font/cabin"
-        android:textColor="@color/colorYellowWarm"
-        android:text="description"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_location_name_find_loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/img_location_icon"
+            app:layout_constraintStart_toEndOf="@id/img_location_icon"
+            android:fontFamily="@font/cabin"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_find_location_on_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:icon="@drawable/ic_find_on_map"
+            android:text="@string/find_from_map"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textColor="#AED581"
+            app:iconTint="#64B5F6"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/line_lay_temp_find_loc"
+            app:layout_constraintTop_toBottomOf="@id/btn_find_location_on_map"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_temp_find_loc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="68sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/cabin"
+                android:textColor="@color/colorYellowWarm"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/o_temp_icon"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorYellowWarm"
+                android:textStyle="bold"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/c_temp_icon"
+                android:textColor="@color/colorYellowWarm"
+                android:textSize="28sp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/cabin"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_description_find_loc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/line_lay_temp_find_loc"
+            android:fontFamily="@font/cabin"
+            android:textColor="@color/colorYellowWarm"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_five_day_forecast_recycler_find_loc"

@@ -6,6 +6,7 @@
     android:background="@color/colorBlueSky"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:overScrollMode="never"
     tools:context=".fragments.YourLocationFragment">
 
 
@@ -117,6 +118,7 @@
                 android:id="@+id/recycler_view_24h_forecast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 />
 
         </RelativeLayout>

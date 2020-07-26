@@ -102,7 +102,6 @@ public class ViewPagerFragment extends Fragment implements ForecastDataUpdater {
         list.add(FindCityFragment.newInstance(forecast));
         adapter = new ViewPagerAdapter(Objects.requireNonNull(getActivity()), list);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1,false);
-
+        viewPager.setCurrentItem(1, false);
     }
 }

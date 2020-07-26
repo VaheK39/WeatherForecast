@@ -14,6 +14,7 @@ public class MapUtils {
     public static final long LOCATION_REQUEST_INTERVAL = 6000;
 
     public static final int MAP_INTENT_RESULT_REQUEST_CODE = 1002;
+    public static final int PLACE_INTENT_RESULT_REQUEST_CODE = 1003;
     public static final String MAP_INTENT_RESULT_KEY_LATITUDE = "map_intent_key_latitude";
     public static final String MAP_INTENT_RESULT_KEY_LONGITUDE = "map_intent_key_longitude";
 

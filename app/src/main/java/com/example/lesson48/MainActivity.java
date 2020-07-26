@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.WindowManager;
@@ -19,6 +20,7 @@ import android.view.WindowManager;
 import com.example.lesson48.fragments.FindCityFragment;
 import com.example.lesson48.fragments.ForecastDataUpdater;
 import com.example.lesson48.fragments.LoadingFragment;
+import com.example.lesson48.fragments.SplashScreenFragment;
 import com.example.lesson48.fragments.ViewPagerFragment;
 import com.example.lesson48.geo.GeoLocate;
 import com.example.lesson48.model.FiveDayWeatherForecast;
@@ -49,15 +51,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setStatusBarColor();
 
-        replaceFragment(R.id.main_container, new LoadingFragment(), "loading_fragment");
-
-        runApplication();
+        replaceFragment(R.id.main_container, new SplashScreenFragment(), getString(R.string.splash_screen_tag));
+        new Handler().postDelayed(this::runApplication, 2000);
 
     }
 
     public void runApplication() {
-        setStatusBarColor();
+        replaceFragment(R.id.main_container, new LoadingFragment(), getString(R.string.loading_fragment_tag));
         handler = new PermissionsHandler(this, MapUtils.MAP_PERMISSIONS);
         handler.create();
         client = new RetrofitClient(this);
@@ -198,6 +200,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFindFromMapClick() {
         startActivityForResult(new Intent(this, MapActivity.class), MapUtils.MAP_INTENT_RESULT_REQUEST_CODE);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }

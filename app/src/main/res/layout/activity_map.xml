@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MapActivity">
 
+
     <fragment
         android:id="@+id/fragment_map"
         android:layout_width="match_parent"
@@ -16,29 +17,47 @@
         />
 
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_search_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="46dp"
         android:layout_margin="12dp"
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="8dp"
         >
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:drawableStart="@drawable/ic_search"
             android:padding="8dp"
             android:background="@android:color/white"
-            android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1"
             android:hint="@string/location_search_hint"
             />
     </androidx.cardview.widget.CardView>
 
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="12dp"
+        >
+
+
+        <fragment
+            android:id="@+id/fragment_places"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name=
+                "com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
+
+    </androidx.cardview.widget.CardView>
 
     <FrameLayout
         android:id="@+id/frame_lay_btn_locate"

@@ -1,41 +1,45 @@
 package com.example.lesson48.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 
 import com.example.lesson48.R;
 import com.example.lesson48.adapter.FiveDayForecastRVFindLocAdapter;
 import com.example.lesson48.day_counter.DayOfTheWeekCounter;
 import com.example.lesson48.model.FiveDayForecastModel;
 import com.example.lesson48.model.FiveDayWeatherForecast;
-import com.example.lesson48.retrofit.RetrofitClient;
 import com.example.lesson48.utils.APIData;
 import com.example.lesson48.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
-public class FindCityFragment extends Fragment implements ForecastDataUpdater{
+public class FindCityFragment extends Fragment {
     private static final String TAG = "FindCityFragment";
 
 
     private FiveDayWeatherForecast forecast;
     private AppCompatTextView txtLocation, txtTemp, txtDescription;
     private AppCompatButton btnFindOnMap;
+    private ConstraintLayout constLayMainData;
+    private RelativeLayout relLay5dForecastContainer;
     private RecyclerView recyclerView;
 
     private FiveDayForecastRVFindLocAdapter adapter;
@@ -57,7 +61,6 @@ public class FindCityFragment extends Fragment implements ForecastDataUpdater{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             this.forecast = getArguments().getParcelable(Constants.BundleKeys.FORECAST_FIND_LOCATION_FRAGMENT);
@@ -71,19 +74,29 @@ public class FindCityFragment extends Fragment implements ForecastDataUpdater{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: ");
         View v = inflater.inflate(R.layout.fragment_find_city, container, false);
         findIds(v);
+        startAnimations();
         initData(forecast, loadRecyclerViewData(forecast));
         initButtons();
         return v;
     }
 
+    private void startAnimations() {
+        Animation fadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_slow);
+        Animation downFadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.down_fade_in_short);
+        constLayMainData.startAnimation(fadeIn);
+        relLay5dForecastContainer.startAnimation(downFadeIn);
+        constLayMainData.setVisibility(View.VISIBLE);
+        relLay5dForecastContainer.setVisibility(View.VISIBLE);
+    }
 
 
     private void initButtons() {
         btnFindOnMap.setOnClickListener( view -> {
             findFromMapListener.onFindFromMapClick();
+            constLayMainData.setVisibility(View.GONE);
+            relLay5dForecastContainer.setVisibility(View.GONE);
         });
     }
 
@@ -92,6 +105,10 @@ public class FindCityFragment extends Fragment implements ForecastDataUpdater{
         String temp = String.valueOf(forecast.getWeatherForecast().get(0).getMain().getTemp());
         String description = forecast.getWeatherForecast().get(0).getWeather().get(0).getDescription();
 
+        Date date = new Date(forecast.getWeatherForecast().get(0).getDt());
+        String str = DateFormat.format("yyyy/MM/dd hh:mm:ss", date).toString();
+
+        Log.d(TAG, "initData: " + forecast.getCity().getTimezone() + ", " + str);
         txtLocation.setText(location);
         txtTemp.setText(temp);
         txtDescription.setText(description);
@@ -150,12 +167,10 @@ public class FindCityFragment extends Fragment implements ForecastDataUpdater{
         txtDescription = v.findViewById(R.id.txt_description_find_loc);
         btnFindOnMap = v.findViewById(R.id.btn_find_location_on_map);
         recyclerView = v.findViewById(R.id.recycler_view_5d_forecast_find_loc);
+        relLay5dForecastContainer = v.findViewById(R.id.rel_lay_five_day_forecast_recycler_container_find_loc);
+        constLayMainData = v.findViewById(R.id.const_lay_main_info_container_find_loc);
     }
 
-    @Override
-    public void onForecastUpdate(FiveDayWeatherForecast forecast) {
-        //initData(forecast, loadRecyclerViewData(forecast));
-    }
 
 
     public interface OnFindFromMapListener {
@@ -163,4 +178,12 @@ public class FindCityFragment extends Fragment implements ForecastDataUpdater{
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (constLayMainData.getVisibility() == View.GONE
+                || relLay5dForecastContainer.getVisibility() == View.GONE) {
+            startAnimations();
+        }
+    }
 }
