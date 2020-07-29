@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.NoConnectionFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_no_connection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guide_no_connection"
+        app:layout_constraintHeight_percent="0.3"
+        android:src="@drawable/no_connection"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_no_connection"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txt_no_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/heebo_medium"
+        android:text="@string/no_connection"
+        android:textColor="@color/colorBoldBlueIcons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_no_connection"
+        android:layout_marginTop="12dp"
+        />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_no_connection_try_again"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txt_no_connection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/guide_no_connection"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:text="@string/try_again"
+        app:icon="@drawable/ic_refresh"
+        app:iconTint="@color/colorBlueSky"
+        android:textColor="@color/colorBlueSky"
+        android:textSize="12sp"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

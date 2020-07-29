@@ -54,5 +54,8 @@
     <!--    Main Activity    -->
     <string name="splash_screen_tag">splash_screen_fragment</string>
     <string name="loading_fragment_tag">loading_fragment</string>
+    <string name="no_connection_fragment_tag">no_connection_fragment</string>
+    <string name="no_connection">Check your internet connection, and try again</string>
+    <string name="try_again">Try Again</string>
 
 </resources>

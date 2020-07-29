@@ -1,6 +1,5 @@
-package com.example.lesson48.fragments;
+package com.example.lesson48.fragment;
 
-import android.location.Address;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +19,6 @@ import com.example.lesson48.R;
 import com.example.lesson48.adapter.FiveDayForecastRVAdapter;
 import com.example.lesson48.adapter.TwentyFourHourRVAdapter;
 import com.example.lesson48.day_counter.DayOfTheWeekCounter;
-import com.example.lesson48.geo.GeoLocate;
 import com.example.lesson48.model.FiveDayForecastModel;
 import com.example.lesson48.model.FiveDayWeatherForecast;
 import com.example.lesson48.model.TwentyFourHourForecastModel;

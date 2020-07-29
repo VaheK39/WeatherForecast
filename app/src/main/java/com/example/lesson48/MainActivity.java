@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,14 +12,18 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
-import com.example.lesson48.fragments.FindCityFragment;
-import com.example.lesson48.fragments.ForecastDataUpdater;
-import com.example.lesson48.fragments.LoadingFragment;
-import com.example.lesson48.fragments.SplashScreenFragment;
-import com.example.lesson48.fragments.ViewPagerFragment;
+import com.example.lesson48.connection.ConnectionState;
+import com.example.lesson48.connection.NetworkConnection;
+import com.example.lesson48.fragment.FindCityFragment;
+import com.example.lesson48.fragment.ForecastDataUpdater;
+import com.example.lesson48.fragment.FragmentReplacer;
+import com.example.lesson48.fragment.LoadingFragment;
+import com.example.lesson48.fragment.NoConnectionFragment;
+import com.example.lesson48.fragment.SplashScreenFragment;
+import com.example.lesson48.fragment.ViewPagerFragment;
 import com.example.lesson48.geo.GeoLocate;
 import com.example.lesson48.model.FiveDayWeatherForecast;
 import com.example.lesson48.permission.PermissionsHandler;
@@ -39,34 +41,60 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements ForecastGetter, FindCityFragment.OnFindFromMapListener {
+        implements ForecastGetter, FindCityFragment.OnFindFromMapListener, NoConnectionFragment.Refresher {
     private static final String TAG = "MainActivity";
 
     private RetrofitClient client;
     private PermissionsHandler handler;
     private LocationCallback locationCallback;
     private ForecastDataUpdater forecastDataUpdater;
+    private ConnectionState connectionState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setStatusBarColor();
+        showSplash();
 
-        replaceFragment(R.id.main_container, new SplashScreenFragment(), getString(R.string.splash_screen_tag));
-        new Handler().postDelayed(this::runApplication, 2000);
+
+        connectionState = new ConnectionState(this);
+        new Handler().postDelayed(this::checkInternetConnection, 2000);
+
 
     }
 
+
+    private void checkInternetConnection() {
+        if (NetworkConnection.isConnectedToInternet(this)) {
+            runApplication();
+        } else {
+            FragmentReplacer.replace(this, R.id.main_container, new NoConnectionFragment(), getString(R.string.no_connection_fragment_tag));
+        }
+    }
+
     public void runApplication() {
-        replaceFragment(R.id.main_container, new LoadingFragment(), getString(R.string.loading_fragment_tag));
+        FragmentReplacer.replace(this, R.id.main_container, new LoadingFragment(), getString(R.string.loading_fragment_tag));
         handler = new PermissionsHandler(this, MapUtils.MAP_PERMISSIONS);
         handler.create();
         client = new RetrofitClient(this);
         RetrofitClient.create();
         getForecastOfYourLocation();
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        connectionState.enable(this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        connectionState.disable(this);
+    }
 
     private void getForecastOfYourLocation() {
         GeoLocate geoLocate = new GeoLocate(this);
@@ -79,34 +107,36 @@ public class MainActivity extends AppCompatActivity
                 getCallData(location);
 
             } else {
-                LocationRequest locationRequest = LocationRequest.create();
-                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                locationRequest.setInterval(MapUtils.LOCATION_REQUEST_INTERVAL);
-                locationCallback = new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
-                        if (locationResult != null) {
-                            for (Location location : locationResult.getLocations()) {
-                                if (location != null) {
-                                    getCallData(location);
-                                    return;
-                                }
-                            }
-
-                        }
-                    }
-                };
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                LocationServices.getFusedLocationProviderClient(this)
-                        .requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+                makeLocationRequest();
             }
         });
 
 
+    }
 
+    private void makeLocationRequest() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(MapUtils.LOCATION_REQUEST_INTERVAL);
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                if (locationResult != null) {
+                    for (Location location : locationResult.getLocations()) {
+                        if (location != null) {
+                            getCallData(location);
+                            return;
+                        }
+                    }
+                }
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        LocationServices.getFusedLocationProviderClient(this)
+                .requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
     private void getCallData(Location location) {
@@ -116,39 +146,25 @@ public class MainActivity extends AppCompatActivity
         client.getForecast(queries, Constants.CallCases.CALL_FROM_MAIN);
         if (locationCallback != null)
             LocationServices.getFusedLocationProviderClient(this)
-            .removeLocationUpdates(locationCallback);
+                    .removeLocationUpdates(locationCallback);
     }
 
-
-    private void replaceFragment (int containerId, Fragment fragment, String tag, boolean addToBackStack, String backStackName){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (addToBackStack) {
-            transaction.addToBackStack(backStackName);
-        }
-        transaction.replace(containerId, fragment, tag)
-                .commit();
-    }
-
-    private void replaceFragment (int containerId, Fragment fragment, String tag) {
-        replaceFragment(containerId, fragment, tag, false, null);
-    }
 
     @Override
     public void setForecast(FiveDayWeatherForecast forecast, String calledFrom) {
         switch (calledFrom) {
             case Constants.CallCases.CALL_FROM_MAIN:
-                replaceFragment(R.id.main_container, ViewPagerFragment.newInstance(forecast), getString(R.string.vp_fragment_tag));
+                //replaceFragment(R.id.main_container, ViewPagerFragment.newInstance(forecast), getString(R.string.vp_fragment_tag));
+                FragmentReplacer.replace(this, R.id.main_container, ViewPagerFragment.newInstance(forecast), getString(R.string.vp_fragment_tag));
                 break;
             case Constants.CallCases.CALL_FROM_MAP:
-                forecastDataUpdater = (ForecastDataUpdater)getSupportFragmentManager().findFragmentByTag(getString(R.string.vp_fragment_tag));
+                forecastDataUpdater = (ForecastDataUpdater) getSupportFragmentManager().findFragmentByTag(getString(R.string.vp_fragment_tag));
                 assert forecastDataUpdater != null;
                 forecastDataUpdater.onForecastUpdate(forecast);
                 break;
         }
 
     }
-
-
 
 
     @Override
@@ -180,6 +196,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private void showSplash() {
+        FragmentReplacer.replace(this, R.id.main_container, new SplashScreenFragment(), getString(R.string.splash_screen_tag));
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -201,5 +221,14 @@ public class MainActivity extends AppCompatActivity
     public void onFindFromMapClick() {
         startActivityForResult(new Intent(this, MapActivity.class), MapUtils.MAP_INTENT_RESULT_REQUEST_CODE);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onRefresh() {
+        if (NetworkConnection.isConnectedToInternet(this)) {
+            runApplication();
+        } else {
+            Toast.makeText(this, "No Connection", Toast.LENGTH_SHORT).show();
+        }
     }
 }

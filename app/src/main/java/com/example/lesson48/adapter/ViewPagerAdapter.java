@@ -5,9 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.lesson48.fragments.FindCityFragment;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {

@@ -1,4 +1,4 @@
-package com.example.lesson48.fragments;
+package com.example.lesson48.fragment;
 
 import com.example.lesson48.model.FiveDayWeatherForecast;
 
