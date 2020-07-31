@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity
         connectionState.disable(this);
     }
 
+
     private void getForecastOfYourLocation() {
         GeoLocate geoLocate = new GeoLocate(this);
         Task<Location> locationTask = geoLocate.getTask();
@@ -155,7 +156,6 @@ public class MainActivity extends AppCompatActivity
     public void setForecast(FiveDayWeatherForecast forecast, String calledFrom) {
         switch (calledFrom) {
             case Constants.CallCases.CALL_FROM_MAIN:
-                //replaceFragment(R.id.main_container, ViewPagerFragment.newInstance(forecast), getString(R.string.vp_fragment_tag));
                 FragmentReplacer.replace(this, R.id.main_container, ViewPagerFragment.newInstance(forecast), getString(R.string.vp_fragment_tag));
                 break;
             case Constants.CallCases.CALL_FROM_MAP:
