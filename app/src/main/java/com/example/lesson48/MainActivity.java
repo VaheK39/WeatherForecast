@@ -58,15 +58,13 @@ public class MainActivity extends AppCompatActivity
         ActivityUI.setStatusBarColor(this, R.color.colorBlueSky);
         showSplash();
 
-
-        connectionState = new ConnectionState(this);
-        new Handler().postDelayed(this::checkInternetConnection, 2000);
+        checkInternetConnection();
 
 
     }
 
-
     private void checkInternetConnection() {
+        connectionState = new ConnectionState(this);
         if (NetworkConnection.isConnectedToInternet(this)) {
             runApplication();
         } else {
@@ -96,7 +94,6 @@ public class MainActivity extends AppCompatActivity
         super.onPause();
         connectionState.disable(this);
     }
-
 
     private void getForecastOfYourLocation() {
         GeoLocate geoLocate = new GeoLocate(this);

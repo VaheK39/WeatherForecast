@@ -2,6 +2,8 @@ package com.example.lesson48.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -94,9 +96,6 @@ public class ViewPagerFragment extends Fragment implements ForecastDataUpdater {
 
     @Override
     public void onForecastUpdate(FiveDayWeatherForecast forecast) {
-//        forecastDataUpdater = FindCityFragment.newInstance(forecast);
-//        forecastDataUpdater.onForecastUpdate(forecast);
-        Log.d(TAG, "onForecastUpdate: activity = " + getActivity());
         List<Fragment> list = new ArrayList<>();
         list.add(YourLocationFragment.newInstance(this.forecast));
         list.add(FindCityFragment.newInstance(forecast));
