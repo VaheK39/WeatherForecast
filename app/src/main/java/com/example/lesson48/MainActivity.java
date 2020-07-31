@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity
         }
         LocationServices.getFusedLocationProviderClient(this)
                 .requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+
     }
 
     private void getCallData(Location location) {
