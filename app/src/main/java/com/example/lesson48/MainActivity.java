@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.lesson48.connection.ConnectionState;
 import com.example.lesson48.connection.NetworkConnection;
+import com.example.lesson48.customized_UI.ActivityUI;
 import com.example.lesson48.fragment.FindCityFragment;
 import com.example.lesson48.fragment.ForecastDataUpdater;
 import com.example.lesson48.fragment.FragmentReplacer;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setStatusBarColor();
+        ActivityUI.setStatusBarColor(this, R.color.colorBlueSky);
         showSplash();
 
 
@@ -188,14 +189,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void setStatusBarColor() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS,
-                WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.colorBlueSky, null));
-    }
-
-
     private void showSplash() {
         FragmentReplacer.replace(this, R.id.main_container, new SplashScreenFragment(), getString(R.string.splash_screen_tag));
     }
@@ -219,13 +212,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFindFromMapClick() {
-        startActivityForResult(new Intent(this, MapActivity.class), MapUtils.MAP_INTENT_RESULT_REQUEST_CODE);
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        if (NetworkConnection.isConnected) {
+            startActivityForResult(new Intent(this, MapActivity.class), MapUtils.MAP_INTENT_RESULT_REQUEST_CODE);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        }else {
+            FragmentReplacer.replace(this, R.id.main_container, new NoConnectionFragment(), getString(R.string.no_connection_fragment_tag));
+        }
     }
 
     @Override
     public void onRefresh() {
-        if (NetworkConnection.isConnectedToInternet(this)) {
+        if (NetworkConnection.isConnected) {
             runApplication();
         } else {
             Toast.makeText(this, "No Connection", Toast.LENGTH_SHORT).show();

@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.lesson48.customized_UI.ActivityUI;
 import com.example.lesson48.geo.GeoLocate;
 import com.example.lesson48.utils.MapUtils;
 import com.google.android.gms.common.api.Status;
@@ -54,6 +55,7 @@ public class MapActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        ActivityUI.setStatusBarColor(this, R.color.colorBlueSky);
 
         findIds();
         getLocationPermissions();

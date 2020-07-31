@@ -41,7 +41,7 @@ public class ConnectionState extends ConnectivityManager.NetworkCallback {
     public void onAvailable(@NonNull Network network) {
         super.onAvailable(network);
         Log.d(TAG, "onAvailable: Network is available");
-        Toast.makeText(context, "Network is available", Toast.LENGTH_SHORT).show();
+        NetworkConnection.isConnected = true;
     }
 
 
@@ -49,7 +49,7 @@ public class ConnectionState extends ConnectivityManager.NetworkCallback {
     public void onLost(@NonNull Network network) {
         super.onLost(network);
         Log.d(TAG, "onAvailable: Connection Lost");
-        Toast.makeText(context, "Connection Lost", Toast.LENGTH_SHORT).show();
+        NetworkConnection.isConnected = false;
     }
 
 

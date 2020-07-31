@@ -6,6 +6,7 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 
 public class NetworkConnection {
+    public static boolean isConnected = false;
 
     public static boolean isConnectedToInternet(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -22,7 +23,6 @@ public class NetworkConnection {
                 }
             }
         }
-
         return false;
     }
 }
