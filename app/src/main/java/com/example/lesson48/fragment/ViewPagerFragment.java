@@ -31,7 +31,6 @@ public class ViewPagerFragment extends Fragment implements ForecastDataUpdater {
     private ViewPager2 viewPager;
     private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
-    private ForecastDataUpdater forecastDataUpdater;
 
     public ViewPagerFragment() {
         // Required empty public constructor
@@ -92,7 +91,6 @@ public class ViewPagerFragment extends Fragment implements ForecastDataUpdater {
     }
 
     
-
 
     @Override
     public void onForecastUpdate(FiveDayWeatherForecast forecast) {

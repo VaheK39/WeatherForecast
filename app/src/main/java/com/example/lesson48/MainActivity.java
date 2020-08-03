@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
     private void checkInternetConnection() {
         connectionState = new ConnectionState(this);
         if (NetworkConnection.isConnectedToInternet(this)) {
-            runApplication();
+            new Handler().postDelayed(this::runApplication, 2000);
         } else {
             FragmentReplacer.replace(this, R.id.main_container, new NoConnectionFragment(), getString(R.string.no_connection_fragment_tag));
         }
