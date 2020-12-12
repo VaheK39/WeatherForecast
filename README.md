@@ -11,7 +11,7 @@ This is my first app, for android devices. It checks the weather from OpenWeathe
 
 ###### Screenshots
 
-  ![](https://github.com/watermelon-mann/WeatherForecast/blob/master/Screenshot_2020-12-12-17-32-45-846_com.example.lesson48.jpg = 250x250)
+  ![](https://github.com/watermelon-mann/WeatherForecast/blob/master/Screenshot_2020-12-12-17-32-45-846_com.example.lesson48.jpg?v=4&s=200)
   ![](https://github.com/watermelon-mann/WeatherForecast/blob/master/Screenshot_2020-12-12-17-32-52-773_com.example.lesson48.jpg)
   ![](https://github.com/watermelon-mann/WeatherForecast/blob/master/Screenshot_2020-12-12-17-32-58-571_com.example.lesson48.jpg)
   ![](https://github.com/watermelon-mann/WeatherForecast/blob/master/Screenshot_2020-12-12-17-33-12-347_com.example.lesson48.jpg)
