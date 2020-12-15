@@ -8,6 +8,7 @@ This is my first app, for android devices. It checks the weather from OpenWeathe
 - Retrofit
 - Google Maps API
 - Splash Screen
+- Animations
 
 ###### Screenshots
   
