@@ -31,7 +31,7 @@ This is my first app, for android devices. It checks the weather from OpenWeathe
    <img src="https://github.com/watermelon-mann/WeatherForecast/blob/master/Screenshot_2020-12-12-17-33-20-446_com.example.lesson48.jpg" width="300" height="600"/>
 
 # ------------------------------------  
-    <p align = "center">
+   <p align = "center">
    <img src="https://github.com/watermelon-mann/WeatherForecast/blob/master/Screenshot_2020-12-12-17-33-48-360_com.example.lesson48.jpg" width="300" height="600"/>
 
 
